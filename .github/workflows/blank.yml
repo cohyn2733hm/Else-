@@ -1,0 +1,22 @@
+ If @error = 0 Then                                ;There is an item selected, ask if it shall be replaced !
+        Local $btn = MsgBox(35, "Overwrite", "item # " & $ssp[1] & @CRLF & "Name: " & $ssp[2] & @CRLF & "Yes: Overwrite; No: Add new; Cancel: Stop")
+        If $btn = 6 Then                         ;overwrite
+            StatusWrite("Listview: Overwriting item (" & $ssp[1] & ") ")
+            EnterANameAndWrite($ssp[1])
+        EndIf
+    Else                                            ;No selection - create new item
+        Local $btn = 7
+    EndIf
+    If $btn = 7 Then                                  ;;No selection - start creating new item
+        Local $tst = -1
+        $x = 0
+        Do
+            $t = IniRead($inifile, "link", ($x & "0"), "")
+            If $t = "" Then
+                $tst = $x
+                $x = $inilinkentriesmax
+            EndIf
+            $x = $x + 1
+        Until $x >= $inilinkentriesmax
+        If $tst > -1 Then
+            EnterANameAndWrite($tst)
